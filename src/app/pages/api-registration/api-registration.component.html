@@ -1,0 +1,213 @@
+<app-header></app-header>
+
+<!-- Page Wrapper -->
+<div class="wrapper">
+    
+    <div class="row">
+
+        <!-- Sidebar -->
+        <div  class="col-sm-2">
+          <app-sidebar active="1" ></app-sidebar>
+        </div>
+        <!-- /.sidebar -->
+
+        <!-- Content -->
+        <div class="col-sm-10">
+            
+            
+          <!-- Page Content-->
+          <div class="card border-secondary">
+            
+            
+            <app-page-header title="API Registration" title_index="2"></app-page-header>
+
+            <div class="card-body">
+
+              <app-info-bar message="Note: User can register multiple API as per requirements."></app-info-bar>
+                       
+              <!-- API Registration Form-->
+              <div class="card  bg-secondary mb-3">
+                
+                <div class="card-body">
+
+                  <div class="row">
+
+                    <div class="form-group col-8" >
+                      <label for="inputApiURL">API URL's</label>
+                      <input [(ngModel)]="apiPostData.apiURL" type="text" class="form-control" id="inputApiURL">
+                    </div>
+
+                    <div class="form-group col-4" >
+                        <label for="selectApplicationName">Application Name</label>
+                        <select [(ngModel)]="apiPostData.appId" class="custom-select"  id="selectApplicationName" >
+                            
+                          <option *ngFor="let app of selectApps" [value]="app.app_id" >
+                            {{app.app_name}}
+                          </option>
+
+                        </select>
+                    </div>
+                    
+                  </div>
+                  
+                  <!-- Roles Table -->
+                  <div class="card">
+                    
+                    <div class="card-body">
+
+                      <div class="row" *ngFor="let roleItem of apiPostData.roles; let idx = index" [attr.data-index]="idx">
+
+                        <div class="form-group col-2" >
+                          <label for="inputRole">Role</label>
+                          <input  [(ngModel)]="roleItem.role" type="text" class="form-control" id="inputRole"  >
+                        </div>
+
+                        <div class="form-group col-2" >
+                            <label for="seleteMethod">Method</label>
+
+                            <ng-multiselect-dropdown
+                              id="selectMethod"
+                              [data]="multiSelectDropdownList"
+                              [(ngModel)]="roleItem.methodType"
+                              [settings]="multiSelectDropdownSettings"
+                              >
+                            </ng-multiselect-dropdown>
+
+                        </div>
+
+                        <div class="form-group col-3" >
+                          <label for="inputComponent">Server Metadata</label>
+                          <input [(ngModel)]="roleItem.serverMetadata" type="text" class="form-control" id="inputComponent"  placeholder="">
+                        </div>
+
+                        <div class="form-group col-3" >
+                          <label for="inputComponent">UI Metadata</label>
+                          <input [(ngModel)]="roleItem.uiMetadata" type="text" class="form-control" id="inputComponent"  placeholder="">
+                        </div>
+                        
+                        <!-- Conditional Add / Delete button-->
+                        <div  *ngIf="idx == 0" class="form-group col-2" style="padding-top: 25px;">
+                          <button (click)="addRoleForm()" type="button" class=" form-control btn btn-outline-danger">
+                            <i class="fas fa-plus"></i> ADD
+                          </button>
+                        </div>
+
+                        <div  *ngIf="idx != 0" class="form-group col-2" style="padding-top: 25px;">
+                          <button (click)="deleteRoleForm(roleItem)" type="button" class=" form-control btn btn-outline-primary">
+                            <i class="fas fa-trash"></i> DELETE
+                          </button>
+                        </div>
+                        <!-- Conditional Add / Delete button-->
+
+                      </div>
+                      
+                      <button type="button" (click)="registerAPI()" class="btn btn-success">Register</button>
+
+                    </div>
+
+                  </div>
+                  <!-- /.Roles Table -->
+
+
+                </div>
+
+              </div>
+              <!-- /.API Registration Form-->
+
+
+              <app-table 
+              [dataSource] = "tableDataSource"
+              table_title="List of Registered API's"
+              [displayedColumns] = "tableDisplayColumns"
+              (deleteItem)="deleteAPITableItem($event)"
+              (editItem) = "editAPITableItem($event)"
+              >
+              </app-table>
+
+            </div>
+              
+          </div>
+          <!-- /. Page Content-->
+        
+
+        </div>
+        <!-- /. Content -->
+
+    </div>
+
+</div>
+<!--/. Page Wrapper-->
+
+<!-- Modal #NOTE: ng-tempage is used -->
+<ng-template #editModal let-modal>
+    
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Edit API</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+
+    <!-- <app-info-bar message="Duplicate Entry Exist"></app-info-bar> -->
+    
+    <div class="row">
+
+      <div class="form-group col-8" >
+        <label for="inputApiURL">API URL's</label>
+        <input disabled [(ngModel)]="apiEditPostData.apiURL" type="text" class="form-control" id="inputApiURL">
+      </div>
+
+      <div class="form-group col-4" >
+          <label for="selectApplicationName">Application Name</label>
+          <select [(ngModel)]="apiEditPostData.appId" class="custom-select"  id="selectApplicationName" disabled> 
+              <option *ngFor="let app of selectApps" [value]="app.app_id" >
+              {{app.app_name}}
+              </option>
+          </select>
+      </div>
+      
+    </div>
+
+    <div class="row">
+
+      <div class="form-group col-3" >
+        <label for="inputRole">Role</label>
+        <input disabled [(ngModel)]="apiEditPostData.role" type="text" class="form-control" id="inputRole"  >
+      </div>
+
+      <div class="form-group col-3" >
+          <label for="seleteMethod">Method</label>
+
+          <select disabled [(ngModel)]="apiEditPostData.methodId" class="custom-select"  id="seleteMethod" >
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+            <option value="PUT">PUT</option>
+            <option value="DELETE">DELETE</option>
+          </select>
+
+      </div>
+
+      <div class="form-group col-3" >
+        <label for="inputComponent">Server Metadata</label>
+        <input [(ngModel)]="apiEditPostData.serverMetadata" type="text" class="form-control" id="inputComponent"  placeholder="">
+      </div>
+
+      <div class="form-group col-3" >
+        <label for="inputComponent">UI Metadata</label>
+        <input [(ngModel)]="apiEditPostData.uiMetadata" type="text" class="form-control" id="inputComponent"  placeholder="">
+      </div>
+
+
+    </div>
+                              
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-success" (click)="saveEditModal()">Save</button>
+  </div>
+
+</ng-template>
+<!-- /.Modal  -->
+

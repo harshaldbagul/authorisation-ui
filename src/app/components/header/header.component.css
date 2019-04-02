@@ -1,0 +1,8 @@
+.navbar-brand{
+    padding: 0;
+}
+
+.ml-auto .dropdown-menu {
+    left: auto !important;
+    right: 0px;
+}

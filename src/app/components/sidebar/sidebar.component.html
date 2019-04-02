@@ -1,0 +1,19 @@
+<div class="list-group">
+
+  <!-- get index for items-->
+  <div *ngFor="let item of items; let idx = index" [attr.data-index]="idx" >
+  
+    <!-- if idx is not active, show normal link-->
+    <!-- use routerLink for url routing in -->
+    <a *ngIf="active != idx" routerLink={{item.url}} class="list-group-item list-group-item-action">
+      {{idx+1}}. {{item.name}}   
+    </a>
+ 
+    <!-- if idx is active, show dark link-->
+    <a  *ngIf="active == idx"  routerLinkActive="active" routerLink={{item.url}}  class="list-group-item list-group-item-action">
+      {{idx+1}}. {{item.name}}   
+    </a>
+
+  </div>
+
+</div> 

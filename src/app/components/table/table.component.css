@@ -1,0 +1,8 @@
+.grey{
+    color: #868686
+}
+
+.dropdown-item.hover, .dropdown-item:hover{
+    background-color: #EAEAEA;
+    background-image: none;
+}
