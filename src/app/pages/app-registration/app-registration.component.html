@@ -1,0 +1,129 @@
+<app-header></app-header>
+
+<!-- Page Wrapper -->
+<div class="wrapper">
+    
+    <div class="row">
+
+        <!-- Sidebar -->
+        <div  class="col-sm-2">
+            <app-sidebar active="0" ></app-sidebar>
+        </div>
+        <!-- /.Sidebar -->
+
+        <!-- Content -->
+        <div class="col-sm-10">
+            
+            
+            <!-- Page Content-->
+            <div class="card border-secondary">
+                
+                <app-page-header title="Application Registration" title_index="1"></app-page-header>
+
+                <div class="card-body">
+
+                    <app-info-bar message="Note: User can register multiple Application as per requirements."></app-info-bar>
+                    
+                    <div class="card  bg-secondary mb-3">
+                        
+                        <!--App registration form-->
+                        <div class="card-body">
+
+                            <div class="row">
+                                
+                                <div class="form-group col-6" >
+                                    <label for="selectApplicationName">Application Name</label>
+                                    <select [(ngModel)]="applicationPostData.appId"class="custom-select"  id="selectApplicationName" >                                        
+                                        <option *ngFor="let app of selectApps" [value]="app.app_id" >
+                                         {{app.app_name}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-6">
+                                    <label for="inputExpirationTime">Expiration Time (hours)</label>
+                                    <input [(ngModel)]="applicationPostData.expiryTime"  type="number" class="form-control" id="inputExpirationTime" required>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inputCallbackURL">Callback URL (optional)</label>
+                                <input [(ngModel)]="applicationPostData.callbackURL" type="text" class="form-control" id="inputCallbackURL" required>
+                            </div>
+                            
+                            <button (click)="registerApplication()" type="button" class="btn btn-success">Register</button>
+                            
+                        </div>
+                        <!-- /.App registration form-->
+
+                    </div>
+
+                    <app-table 
+                    [dataSource] = "tableDataSource"
+                    table_title="List of Registered Application"
+                    [displayedColumns] = "tableDisplayColumns"
+                    (deleteItem)="deleteApplicationTableItem($event)"
+                    (editItem) = "editApplicationTableItem($event)"
+                    >
+                    </app-table>
+
+                </div>
+                    
+            </div>
+            <!-- ./ Page Content-->
+        
+
+        </div>
+        <!-- /. Content -->
+
+    </div>
+
+</div>
+
+
+
+
+<!-- Modal -->
+<ng-template #editModal let-modal>
+    
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Edit Application</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+
+        <div class="row">
+            
+            <div class="form-group col-6" >
+                <label for="selectApplicationName">Application Name</label>
+                <select [(ngModel)]="applicationEditPostData.appId" class="custom-select"  id="selectApplicationName" disabled>                                        
+                    <option *ngFor="let app of selectApps" [value]="app.app_id" >
+                        {{app.app_name}}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group col-6">
+                <label for="inputExpirationTime">Expiration Time (hours)</label>
+                <input [(ngModel)]="applicationEditPostData.expiryTime" type="number" class="form-control" id="inputExpirationTime" required>
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <label for="inputCallbackURL">Callback URL (optional)</label>
+            <input [(ngModel)]="applicationEditPostData.callbackURL" type="text" class="form-control" id="inputCallbackURL" required>
+        </div>
+                                
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-success" (click)="saveEditModal()">Save</button>
+    </div>
+
+</ng-template>
+<!-- /. Modal -->

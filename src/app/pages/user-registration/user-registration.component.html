@@ -1,0 +1,155 @@
+<app-header></app-header>
+
+<!-- Page Wrapper -->
+<div class="wrapper">
+    
+  <div class="row">
+
+    <!-- Sidebar -->
+    <div  class="col-sm-2">
+        <app-sidebar active="2" ></app-sidebar>
+    </div>
+    <!-- /.sidebar -->
+
+    <!-- Content -->
+    <div class="col-sm-10">
+          
+      <!-- Page Content-->
+      <div class="card border-secondary">
+          
+        <app-page-header title="User Registration" title_index="3"></app-page-header>
+
+        <div class="card-body">
+
+          <app-info-bar message="Note: User can register multiple User's as per requirements."></app-info-bar>
+          
+          <!-- User Registration Form-->
+          <div class="card">
+            
+            <div class="card-body">
+
+              <div class="row" *ngFor="let userItem of userPostData; let idx = index" [attr.data-index]="idx" >
+
+                <div class="form-group col-3" >
+                  <label for="inputUserID">User ID</label>
+                  <input [(ngModel)]="userItem.userId" type="text" class="form-control" id="inputUserID">
+                </div>
+
+
+                <div class="form-group col-3" >
+                    <label for="selectApplicationName">Application Name</label>
+                    <select [(ngModel)]="userItem.appId" class="custom-select"  id="selectApplicationName" >
+                      <option *ngFor="let app of selectApps" [value]="app.app_id" >
+                        {{app.app_name}}
+                      </option>
+                    </select>
+                </div>
+
+                
+
+                <div class="form-group col-3" >
+                    <label for="inputRoles">Roles (,)</label>
+                    <input [(ngModel)]="userItem.role" type="text" class="form-control" id="inputRoles" placeholder="Role1, Role2, Role3">
+                </div>
+
+                <div class="form-group col-1"   >
+                    <label for="toggleAccess">Grant</label>
+                    <ui-switch  [(ngModel)]="userItem.grantAccess" id="toggleAccess"></ui-switch>
+                </div>
+
+                
+                <div  *ngIf="idx == 0" class="form-group col-2" style="padding-top: 25px;">
+                  <button (click)="addUserForm()" type="button" class=" form-control btn btn-outline-danger">
+                    <i class="fas fa-plus"></i> ADD
+                  </button>
+                </div>
+
+                <div  *ngIf="idx != 0" class="form-group col-2" style="padding-top: 25px;">
+                  <button (click)="deleteUserForm(userItem)" type="button" class=" form-control btn btn-outline-primary">
+                    <i class="fas fa-trash"></i> DELETE
+                  </button>
+                </div>
+
+
+                
+              </div>
+              
+              <button  (click)="registerUser()" type="button" class="btn btn-success">Register</button>
+
+            </div>
+
+          </div>
+          <!-- /. User Registration Form-->
+
+          <br>
+          <br>
+
+          <app-table 
+          [dataSource] = "tableDataSource"
+          table_title="List of Registered User's"
+          [displayedColumns] = "tableDisplayColumns"
+          (deleteItem)="deleteUserTableItem($event)"
+          (editItem) = "editUserTableItem($event)">
+          </app-table>
+
+        </div>
+          
+      </div>
+      <!-- ./ Page Content-->
+    
+    </div>
+    <!-- /.content -->
+
+  </div>
+
+</div>
+
+
+
+<!-- Modal -->
+<ng-template #editModal let-modal>
+    
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Edit User</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+
+    <div class="row"  >
+
+      <div class="form-group col-3" >
+        <label for="inputUserID">User ID</label>
+        <input disabled [(ngModel)]="userEditPostData.userId" type="text" class="form-control" id="inputUserID">
+      </div>
+
+      <div class="form-group col-3" >
+          <label for="selectApplicationName">Application Name</label>
+          <select disabled [(ngModel)]="userEditPostData.appId" class="custom-select"  id="selectApplicationName" >
+            <option *ngFor="let app of selectApps" [value]="app.app_id" >
+              {{app.app_name}}
+            </option>
+          </select>
+      </div>
+
+      <div class="form-group col-4" >
+          <label for="inputRoles">Roles (,)</label>
+          <input [(ngModel)]="userEditPostData.role" type="text" class="form-control" id="inputRoles" placeholder="Role1, Role2, Role3">
+      </div>
+
+      <div class="form-group col-1" >
+          <label for="toggleAccess">Grant</label>
+          <ui-switch  [(ngModel)]="userEditPostData.grantAccess" id="toggleAccess"></ui-switch>
+      </div>
+
+    </div>
+                              
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-success" (click)="saveEditModal()">Save</button>
+  </div>
+
+</ng-template>

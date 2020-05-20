@@ -1,0 +1,9 @@
+.list-group-item.active{
+    background: #2C5597;
+    border-color: #2C5597;
+}
+
+.list-group-item{
+    border-radius: 100px;
+    margin:10px;
+}

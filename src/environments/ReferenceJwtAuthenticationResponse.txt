@@ -1,0 +1,32 @@
+package com.nissandigital.components.common.authorisation.payload;
+
+/**
+ * This class is used to create instance of JWT token
+ */
+
+public class ReferenceJwtAuthenticationResponse {
+
+	private String referanceToken;
+	private String tokenType = "Bearer";
+
+	public JwtAuthenticationResponse(String referanceToken) {
+		this.referanceToken = referanceToken;
+	}
+
+	public String getAccessToken() {
+		return referanceToken;
+	}
+
+	public void setAccessToken(String referanceToken) {
+		this.referanceToken = referanceToken;
+	}
+
+	public String getTokenType() {
+		return tokenType;
+	}
+
+	public void setTokenType(String tokenType) {
+		this.tokenType = tokenType;
+	}
+
+}
